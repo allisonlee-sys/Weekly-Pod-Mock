@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth System Weekly Readout</title>
+<style>
+  :root {
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f5f5f4;
+    --color-background-tertiary: #f0efed;
+    --color-background-success: #eaf3de;
+    --color-background-warning: #faeeda;
+    --color-background-danger: #fcebeb;
+    --color-background-info: #e6f1fb;
+    --color-text-primary: #1a1a18;
+    --color-text-secondary: #6b6b67;
+    --color-text-success: #3b6d11;
+    --color-text-warning: #854f0b;
+    --color-text-danger: #a32d2d;
+    --color-text-info: #185fa5;
+    --color-border-tertiary: rgba(26,26,24,0.12);
+    --color-border-secondary: rgba(26,26,24,0.25);
+    --color-border-primary: rgba(26,26,24,0.35);
+    --color-border-success: #639922;
+    --color-border-warning: #ba7517;
+    --color-border-danger: #e24b4a;
+    --color-border-info: #378add;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: #1c1c1a;
+      --color-background-secondary: #242422;
+      --color-background-tertiary: #2a2a28;
+      --color-background-success: #173404;
+      --color-background-warning: #412402;
+      --color-background-danger: #501313;
+      --color-background-info: #042c53;
+      --color-text-primary: #f0f0ec;
+      --color-text-secondary: #9a9a94;
+      --color-text-success: #97c459;
+      --color-text-warning: #ef9f27;
+      --color-text-danger: #f09595;
+      --color-text-info: #85b7eb;
+      --color-border-tertiary: rgba(240,240,236,0.12);
+      --color-border-secondary: rgba(240,240,236,0.25);
+      --color-border-primary: rgba(240,240,236,0.35);
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+    min-height: 100vh;
+    padding: 32px 24px;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    background: var(--color-background-primary);
+    border-radius: var(--border-radius-lg);
+    border: 0.5px solid var(--color-border-tertiary);
+    padding: 28px 32px 40px;
+  }
+
+  .gsr-header { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 12px; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 16px; }
+  .gsr-title { font-size: 16px; font-weight: 500; color: var(--color-text-primary); }
+  .gsr-meta { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; }
+  .gsr-badge { font-size: 11px; color: var(--color-text-secondary); background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 3px 10px; white-space: nowrap; }
+
+  .gsr-tabs { display: flex; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 20px; }
+  .gsr-tab { background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; padding: 8px 18px; font-size: 13px; font-weight: 500; color: var(--color-text-secondary); cursor: pointer; font-family: var(--font-sans); transition: color 0.15s, border-color 0.15s; }
+  .gsr-tab.on { color: var(--color-text-primary); border-bottom-color: var(--color-text-primary); }
+  .gsr-tab:hover:not(.on) { color: var(--color-text-primary); }
+
+  .sec { display: none; }
+  .sec.on { display: block; }
+
+  .up { color: var(--color-text-success); }
+  .dn { color: var(--color-text-danger); }
+  .fl { color: var(--color-text-secondary); }
+
+  /* North Star cards */
+  .ns-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .ns-card { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 14px 16px; }
+  .ns-lbl { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-secondary); margin-bottom: 8px; }
+  .ns-val { font-size: 26px; font-weight: 500; font-family: var(--font-mono); color: var(--color-text-primary); line-height: 1; margin-bottom: 6px; }
+  .ns-dl { font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+  .ns-sig { font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; border-top: 0.5px solid var(--color-border-tertiary); padding-top: 8px; margin-top: 8px; }
+
+  /* Metric groups */
+  .mg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+  .mg-block { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow: hidden; }
+  .mg-head { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-secondary); padding: 9px 14px; background: var(--color-background-secondary); border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .mg-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; padding: 8px 14px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .mg-row:last-child { border-bottom: none; }
+  .mg-name { font-size: 12px; color: var(--color-text-primary); }
+  .mg-val { font-size: 13px; font-weight: 500; font-family: var(--font-mono); color: var(--color-text-primary); text-align: right; }
+  .mg-d { font-size: 11px; font-weight: 500; min-width: 44px; text-align: right; }
+
+  /* Section headings */
+  .sh { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-secondary); margin: 20px 0 8px; }
+
+  /* Tables */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .tbl th { text-align: left; font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: .05em; padding: 5px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .tbl td { padding: 9px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); font-size: 13px; vertical-align: top; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl .r { text-align: right; font-family: var(--font-mono); font-weight: 500; }
+  .tbl .sm { color: var(--color-text-secondary); font-size: 12px; }
+
+  /* Badges */
+  .bdg { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: var(--border-radius-md); }
+  .bdg-ok { background: var(--color-background-success); color: var(--color-text-success); }
+  .bdg-wn { background: var(--color-background-warning); color: var(--color-text-warning); }
+  .bdg-nt { background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); }
+
+  /* Note / callout */
+  .note { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-left: 2px solid var(--color-border-secondary); border-radius: 0; padding: 10px 14px; margin-top: 12px; font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; }
+  .note strong { color: var(--color-text-primary); font-weight: 500; }
+
+  /* Builder funnel */
+  .bfnl-wrap { display: grid; grid-template-columns: 1fr 280px; gap: 24px; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .bfnl-head { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-secondary); margin-bottom: 14px; }
+  .bfnl-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .bfnl-stat { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 12px; }
+  .bfnl-stat-lbl { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .bfnl-stat-val { font-size: 20px; font-weight: 500; font-family: var(--font-mono); line-height: 1; color: var(--color-text-primary); }
+  .bfnl-stat-d { font-size: 11px; font-weight: 500; margin-top: 3px; }
+
+  /* Funnel viz */
+  .fviz { width: 100%; }
+  .fviz-row { margin-bottom: 6px; }
+  .fviz-bar-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+  .fviz-label { font-size: 11px; color: var(--color-text-secondary); min-width: 80px; flex-shrink: 0; }
+  .fviz-bar-track { flex: 1; height: 24px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); overflow: hidden; position: relative; }
+  .fviz-bar-fill { height: 100%; border-radius: var(--border-radius-md); display: flex; align-items: center; padding-left: 8px; }
+  .fviz-bar-pct { font-size: 12px; font-weight: 500; font-family: var(--font-mono); color: var(--color-text-primary); }
+  .fviz-sub { font-size: 11px; color: var(--color-text-secondary); padding-left: 88px; line-height: 1.4; margin-bottom: 4px; }
+  .fviz-legend { display: flex; gap: 12px; padding-left: 88px; margin-top: 8px; }
+  .fviz-leg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--color-text-secondary); }
+  .fviz-leg-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+  .bar-ok { background: var(--color-background-success); }
+  .bar-wn { background: var(--color-background-warning); }
+  .bar-dn { background: var(--color-background-danger); }
+
+  /* Plan funnels */
+  .fnl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .fnl-step { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .fnl-step:first-child { border-top: 0.5px solid var(--color-border-tertiary); }
+  .fnl-meta { flex: 1; }
+  .fnl-name { font-size: 13px; color: var(--color-text-primary); margin-bottom: 2px; }
+  .fnl-interp { font-size: 11px; color: var(--color-text-secondary); line-height: 1.4; margin-top: 2px; }
+  .fnl-r { text-align: right; flex-shrink: 0; margin-left: 12px; }
+  .fnl-pct { font-size: 18px; font-weight: 500; font-family: var(--font-mono); }
+  .fnl-d { font-size: 11px; margin-top: 1px; }
+  .fnl-hl { background: var(--color-background-warning); border-radius: var(--border-radius-md); padding: 10px 12px; }
+  .fnl-hl .fnl-name { font-weight: 500; }
+  .fnl-hl .fnl-interp { color: var(--color-text-warning); }
+
+  /* Takeaways */
+  .tk-context { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .tk-panel { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow: hidden; }
+  .tk-panel-head { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .tk-panel-head-ok { background: var(--color-background-success); }
+  .tk-panel-head-wn { background: var(--color-background-warning); }
+  .tk-panel-label-ok { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-success); }
+  .tk-panel-label-wn { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-warning); }
+  .tk-panel-row { display: flex; align-items: baseline; gap: 8px; padding: 7px 14px; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 12px; color: var(--color-text-primary); line-height: 1.4; }
+  .tk-panel-row:last-child { border-bottom: none; }
+  .tk-dot { flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; margin-top: 5px; }
+  .tk-dot-ok { background: var(--color-text-success); }
+  .tk-dot-wn { background: var(--color-text-warning); }
+  .tk-actions-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .tk-actions-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-info); }
+  .tk-actions-sub { font-size: 11px; color: var(--color-text-secondary); }
+  .tk-action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tk-action-card { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+  .tk-action-num { font-size: 22px; font-weight: 500; font-family: var(--font-mono); color: var(--color-text-info); line-height: 1; flex-shrink: 0; width: 28px; }
+  .tk-action-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); line-height: 1.4; margin-bottom: 3px; }
+  .tk-action-detail { font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; }
+
+  .divider-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; color: var(--color-text-secondary); margin-bottom: 16px; }
+  .section-divider { border-top: 0.5px solid var(--color-border-tertiary); padding-top: 20px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="gsr-header">
+    <div>
+      <div class="gsr-title">Growth system weekly readout</div>
+      <div class="gsr-meta">Week of April 14, 2026 &middot; Builder &amp; PLG pod &middot; Monday update</div>
+    </div>
+    <div class="gsr-badge">v4 launch &mdash; week 1</div>
+  </div>
+
+  <div class="gsr-tabs">
+    <button class="gsr-tab on" data-t="ov">Overview</button>
+    <button class="gsr-tab" data-t="cp">Campaigns</button>
+    <button class="gsr-tab" data-t="fn">Funnel health</button>
+    <button class="gsr-tab" data-t="tk">Takeaways</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sec on" id="t-ov">
+    <div class="ns-grid">
+      <div class="ns-card">
+        <div class="ns-lbl">Builder acquisition</div>
+        <div class="ns-val">412</div>
+        <div class="ns-dl up">signups &uarr; +18% WoW</div>
+        <div class="ns-dl dn">activation 8.2% &darr; 1.1pp</div>
+        <div class="ns-sig">Acquisition accelerating post-v4. Activation declining. Do not scale until onboarding friction is understood.</div>
+      </div>
+      <div class="ns-card">
+        <div class="ns-lbl">Activation</div>
+        <div class="ns-val">41%</div>
+        <div class="ns-dl dn">Starter chart save &darr; 3pp</div>
+        <div class="ns-dl up">Plus dashboard creation &uarr; 2pp</div>
+        <div class="ns-sig">Bifurcated. Plus improving on retention behaviors. Starter save rate declining &mdash; biggest friction point.</div>
+      </div>
+      <div class="ns-card">
+        <div class="ns-lbl">Retention</div>
+        <div class="ns-val">61%</div>
+        <div class="ns-dl dn">Plus Day 60 &darr; 3pp &mdash; 20pp below benchmark</div>
+        <div class="ns-dl dn">1,095 at-risk orgs (+34 this week)</div>
+        <div class="ns-sig">Decay pattern active. At-risk pool growing. No systematic intervention for the 45-week window.</div>
+      </div>
+      <div class="ns-card">
+        <div class="ns-lbl">Monetization</div>
+        <div class="ns-val">2.1%</div>
+        <div class="ns-dl up">Free &rarr; Paid &uarr; 0.2pp</div>
+        <div class="ns-dl dn">Plus expansion $18K &darr; 12%</div>
+        <div class="ns-sig">Conversion improving. Enterprise healthy ($124K, +14%). Plus expansion soft &mdash; habit gap symptom.</div>
+      </div>
+    </div>
+    <div class="mg-grid">
+      <div class="mg-block">
+        <div class="mg-head">Builder acquisition</div>
+        <div class="mg-row"><div class="mg-name">Builder signups</div><div class="mg-val">412</div><div class="mg-d up">&uarr; 18%</div></div>
+        <div class="mg-row"><div class="mg-name">Builders as % of signups</div><div class="mg-val">31%</div><div class="mg-d up">&uarr; 4pp</div></div>
+        <div class="mg-row"><div class="mg-name">Builder activation rate</div><div class="mg-val">8.2%</div><div class="mg-d dn">&darr; 1.1pp</div></div>
+      </div>
+      <div class="mg-block">
+        <div class="mg-head">Activation</div>
+        <div class="mg-row"><div class="mg-name">Starter: chart save rate</div><div class="mg-val">41%</div><div class="mg-d dn">&darr; 3pp</div></div>
+        <div class="mg-row"><div class="mg-name">Plus: dashboard creation (Day 30)</div><div class="mg-val">38%</div><div class="mg-d up">&uarr; 2pp</div></div>
+        <div class="mg-row"><div class="mg-name">Plus: teammate invite (Day 30)</div><div class="mg-val">19%</div><div class="mg-d fl">&mdash;</div></div>
+      </div>
+      <div class="mg-block">
+        <div class="mg-head">Retention</div>
+        <div class="mg-row"><div class="mg-name">Starter Month 1</div><div class="mg-val">24%</div><div class="mg-d dn">&darr; 2pp</div></div>
+        <div class="mg-row"><div class="mg-name">Plus Day 60</div><div class="mg-val">61%</div><div class="mg-d dn">&darr; 3pp</div></div>
+        <div class="mg-row"><div class="mg-name">At-risk Plus orgs</div><div class="mg-val">1,095</div><div class="mg-d dn">+34</div></div>
+      </div>
+      <div class="mg-block">
+        <div class="mg-head">Monetization</div>
+        <div class="mg-row"><div class="mg-name">Free &rarr; Paid (blended)</div><div class="mg-val">2.1%</div><div class="mg-d up">&uarr; 0.2pp</div></div>
+        <div class="mg-row"><div class="mg-name">Plus expansion revenue</div><div class="mg-val">$18K</div><div class="mg-d dn">&darr; 12%</div></div>
+        <div class="mg-row"><div class="mg-name">Enterprise expansion revenue</div><div class="mg-val">$124K</div><div class="mg-d up">&uarr; 14%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAMPAIGNS -->
+  <div class="sec" id="t-cp">
+    <div class="sh" style="margin-top:0;">Revenue drivers</div>
+    <table class="tbl">
+      <tr><th>Campaign</th><th>Goal</th><th class="r">Revenue</th><th class="r">WoW</th><th>Verdict</th></tr>
+      <tr><td>Overage upgrade prompt (Plus)</td><td class="sm">Convert overage &rarr; paid</td><td class="r">$31K</td><td class="r up">&uarr; 22%</td><td><span class="bdg bdg-ok">Working</span></td></tr>
+      <tr><td>Dashboard upsell modal (Starter)</td><td class="sm">Upgrade to Plus</td><td class="r">$8K</td><td class="r dn">&darr; 15%</td><td><span class="bdg bdg-wn">Declining</span></td></tr>
+      <tr><td>Feature gate: heatmaps (Starter)</td><td class="sm">Plus upgrade</td><td class="r">$5K</td><td class="r fl">&mdash;</td><td><span class="bdg bdg-nt">Stable</span></td></tr>
+      <tr><td>AI Assistant upgrade (G&amp;S users)</td><td class="sm">G&amp;S expansion</td><td class="r">$2K</td><td class="r fl">Wk 1</td><td><span class="bdg bdg-nt">Too early</span></td></tr>
+    </table>
+    <div class="note"><strong>Copy pattern that works:</strong> The overage prompt leads with value delivered before surfacing pricing. Apply this structure to all upgrade prompts.</div>
+    <div class="sh">Behavior drivers</div>
+    <table class="tbl">
+      <tr><th>Campaign</th><th>Target behavior</th><th class="r">CVR</th><th class="r">WoW</th><th>Verdict</th></tr>
+      <tr><td>"Create your first dashboard" nudge (Plus Day 3)</td><td class="sm">Dashboard creation</td><td class="r">14%</td><td class="r up">&uarr; 3pp</td><td><span class="bdg bdg-ok">Scale it</span></td></tr>
+      <tr><td>"Save this chart" prompt (Starter)</td><td class="sm">Chart save</td><td class="r">9%</td><td class="r dn">&darr; 2pp</td><td><span class="bdg bdg-wn">Fix placement</span></td></tr>
+      <tr><td>"Invite a teammate" (Plus Day 7)</td><td class="sm">Teammate invite</td><td class="r">6%</td><td class="r fl">&mdash;</td><td><span class="bdg bdg-wn">New approach</span></td></tr>
+      <tr><td>Feature discovery: monitors (Plus)</td><td class="sm">Monitor creation</td><td class="r">3%</td><td class="r up">&uarr; 1pp</td><td><span class="bdg bdg-ok">Protect</span></td></tr>
+    </table>
+    <div class="note"><strong>Biggest underperforming lever:</strong> Teammate invite flat at 6% despite being a 2.5x retention multiplier. Test: move trigger to after dashboard creation, reframe copy to "get your team on this dashboard."</div>
+    <div class="sh">Pipeline / sales impact</div>
+    <table class="tbl">
+      <tr><th>Trigger</th><th>Type</th><th class="r">Leads</th><th class="r">WoW</th><th>Verdict</th></tr>
+      <tr><td>High-usage Starter "Talk to us"</td><td class="sm">PQL &rarr; Sales</td><td class="r">47</td><td class="r up">&uarr; 8</td><td><span class="bdg bdg-ok">Working</span></td></tr>
+      <tr><td>Growth feature gate prompt</td><td class="sm">MQL &rarr; AE</td><td class="r">22</td><td class="r fl">&mdash;</td><td><span class="bdg bdg-nt">Stable</span></td></tr>
+      <tr><td>Overage &rarr; upgrade conversation</td><td class="sm">PQL &rarr; CSM</td><td class="r">14</td><td class="r up">&uarr; 5</td><td><span class="bdg bdg-ok">Working</span></td></tr>
+    </table>
+  </div>
+
+  <!-- FUNNEL -->
+  <div class="sec" id="t-fn">
+    <div class="bfnl-wrap">
+      <div class="bfnl-left">
+        <div class="bfnl-head">Builder &amp; startup funnel</div>
+        <div class="bfnl-stats">
+          <div class="bfnl-stat"><div class="bfnl-stat-lbl">Total builder signups</div><div class="bfnl-stat-val">412</div><div class="bfnl-stat-d up">&uarr; 18% WoW</div></div>
+          <div class="bfnl-stat"><div class="bfnl-stat-lbl">Builders activated (Day 7)</div><div class="bfnl-stat-val">34</div><div class="bfnl-stat-d dn">8.2% rate &darr; 1.1pp</div></div>
+          <div class="bfnl-stat"><div class="bfnl-stat-lbl">Builders retained (Month 1)</div><div class="bfnl-stat-val">12</div><div class="bfnl-stat-d dn">35% of activated &darr; 2pp</div></div>
+        </div>
+        <div class="note" style="margin-top:0;"><strong>Signal:</strong> Signups growing fast post-v4, but only 8.2% activate and only 35% of those stick through Month 1. Top-of-funnel win is real; middle is leaking. Audit builder onboarding before scaling acquisition further.</div>
+      </div>
+      <div>
+        <div class="bfnl-head">Funnel this week</div>
+        <div class="fviz" id="fviz"></div>
+        <div class="fviz-legend">
+          <div class="fviz-leg-item"><div class="fviz-leg-dot bar-ok"></div>healthy</div>
+          <div class="fviz-leg-item"><div class="fviz-leg-dot bar-wn"></div>watch</div>
+          <div class="fviz-leg-item"><div class="fviz-leg-dot bar-dn"></div>leak</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider-label">Plan-level funnel detail</div>
+    <div class="fnl-grid">
+      <div>
+        <div class="sh" style="margin-top:0;">Starter funnel</div>
+        <div class="fnl-step"><div class="fnl-meta"><div class="fnl-name">Signup &rarr; Data setup</div><div class="fnl-interp">69% ghost. Personal email drag. Implementation is the real barrier.</div></div><div class="fnl-r"><div class="fnl-pct">31%</div><div class="fnl-d dn">&darr; 2pp</div></div></div>
+        <div class="fnl-step"><div class="fnl-meta"><div class="fnl-name">Data setup &rarr; Chart create</div><div class="fnl-interp">Strong. Users who set up data mostly try a chart.</div></div><div class="fnl-r"><div class="fnl-pct">71%</div><div class="fnl-d fl">&mdash;</div></div></div>
+        <div class="fnl-step fnl-hl"><div class="fnl-meta"><div class="fnl-name">Chart create &rarr; Chart save</div><div class="fnl-interp">Biggest leak. 59% who create don't save. Prompt fires too late in session.</div></div><div class="fnl-r"><div class="fnl-pct dn">41%</div><div class="fnl-d dn">&darr; 3pp</div></div></div>
+        <div class="fnl-step"><div class="fnl-meta"><div class="fnl-name">Chart save &rarr; Month 1 retention</div><div class="fnl-interp">If they save, they come back. Validates save as the activation signal.</div></div><div class="fnl-r"><div class="fnl-pct">58%</div><div class="fnl-d fl">&mdash;</div></div></div>
+        <div class="note">Chart save predicts <strong>29pp higher 30-day retention</strong>. Fire the prompt on first meaningful chart interaction, not after creation completes.</div>
+      </div>
+      <div>
+        <div class="sh" style="margin-top:0;">Plus funnel</div>
+        <div class="fnl-step"><div class="fnl-meta"><div class="fnl-name">Join &rarr; Dashboard creation (Day 30)</div><div class="fnl-interp">Improving. Still leaves 62% without the key habit behavior.</div></div><div class="fnl-r"><div class="fnl-pct">38%</div><div class="fnl-d up">&uarr; 2pp</div></div></div>
+        <div class="fnl-step fnl-hl"><div class="fnl-meta"><div class="fnl-name">Dashboard &rarr; Teammate invite</div><div class="fnl-interp">Major leak. 2.5x retention lever. Flat despite campaigns. Orgs treating Amplitude as solo tool.</div></div><div class="fnl-r"><div class="fnl-pct dn">19%</div><div class="fnl-d fl">&mdash;</div></div></div>
+        <div class="fnl-step"><div class="fnl-meta"><div class="fnl-name">Teammate invite &rarr; Monitor creation</div><div class="fnl-interp">Small population, strong long-term signal.</div></div><div class="fnl-r"><div class="fnl-pct">11%</div><div class="fnl-d up">&uarr; 1pp</div></div></div>
+        <div class="fnl-step"><div class="fnl-meta"><div class="fnl-name">Monitor creation &rarr; Day 90 retention</div><div class="fnl-interp">Best retention outcome in the product. Monitors = habitual use.</div></div><div class="fnl-r"><div class="fnl-pct">81%</div><div class="fnl-d fl">&mdash;</div></div></div>
+        <div class="note"><strong>Bottleneck:</strong> Dashboard &rarr; Teammate invite at 19%. Move invite trigger to immediately after dashboard creation.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAKEAWAYS -->
+  <div class="sec" id="t-tk">
+    <div class="tk-context">
+      <div class="tk-panel">
+        <div class="tk-panel-head tk-panel-head-ok"><span class="tk-panel-label-ok">What's working</span></div>
+        <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>v4 "Free" framing moving Free &rarr; Plus conversions. Up 0.8pp week 1.</div>
+        <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>Dashboard creation nudge +3pp. The 3.3x retention behavior. Scale it.</div>
+        <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>Overage prompt top revenue driver. Value-first copy beats gate-first.</div>
+        <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>Enterprise expansion $124K, +14% WoW. Multi-product attach compounding.</div>
+        <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>Builder signups at 31% of total &mdash; highest mix in recent months.</div>
+      </div>
+      <div class="tk-panel">
+        <div class="tk-panel-head tk-panel-head-wn"><span class="tk-panel-label-wn">Risks</span></div>
+        <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Builder activation declining while acquisition grows. 8.2%, down 1.1pp.</div>
+        <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Plus Day 60 retention 20pp below benchmark. 1,095 at-risk orgs, +34 this week.</div>
+        <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Chart save rate dropped 3pp. Starter's most important activation signal.</div>
+        <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Teammate invite flat at 6%. A 2.5x retention lever no campaign is moving.</div>
+        <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Plus expansion down 12%. Orgs that don't form habits don't expand.</div>
+      </div>
+    </div>
+    <div class="section-divider">
+      <div class="tk-actions-head">
+        <div class="tk-actions-label">Actions next week</div>
+        <div class="tk-actions-sub">6 items &middot; prioritized</div>
+      </div>
+      <div class="tk-action-grid">
+        <div class="tk-action-card"><div class="tk-action-num">1</div><div class="tk-action-body"><div class="tk-action-title">Fix teammate invite prompt</div><div class="tk-action-detail">Move trigger to after dashboard creation. Rewrite copy: "get your team on this dashboard." 2.5x retention lever currently flat.</div></div></div>
+        <div class="tk-action-card"><div class="tk-action-num">2</div><div class="tk-action-body"><div class="tk-action-title">Move dashboard creation to Day 1</div><div class="tk-action-detail">Test with a pre-populated demo dashboard. 3.3x retention multiplier &mdash; earlier is better.</div></div></div>
+        <div class="tk-action-card"><div class="tk-action-num">3</div><div class="tk-action-body"><div class="tk-action-title">Audit builder onboarding</div><div class="tk-action-detail">Pull first-session drop-off for builder cohort specifically. Do not scale acquisition before this is understood.</div></div></div>
+        <div class="tk-action-card"><div class="tk-action-num">4</div><div class="tk-action-body"><div class="tk-action-title">Fix chart save prompt timing</div><div class="tk-action-detail">Fire on first meaningful chart interaction, not after creation completes. Rate dropped 3pp WoW.</div></div></div>
+        <div class="tk-action-card"><div class="tk-action-num">5</div><div class="tk-action-body"><div class="tk-action-title">Ship at-risk org report to Slack</div><div class="tk-action-detail">Snehith's active_plus_at_risk.sql &rarr; Slack weekly. Automatable, no roadmap. Coordinate Trusha on lifecycle timing.</div></div></div>
+        <div class="tk-action-card"><div class="tk-action-num">6</div><div class="tk-action-body"><div class="tk-action-title">Apply overage copy template everywhere</div><div class="tk-action-detail">Structure: [value delivered] &rarr; [what unlocks] &rarr; [clear action]. Rewrite dashboard modal and invite prompt first.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.gsr-tab');
+  var secs = document.querySelectorAll('.sec');
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var t = this.getAttribute('data-t');
+      tabs.forEach(function (x) { x.classList.remove('on'); });
+      secs.forEach(function (s) { s.classList.remove('on'); });
+      this.classList.add('on');
+      var el = document.getElementById('t-' + t);
+      if (el) el.classList.add('on');
+    });
+  });
+
+  var steps = [
+    { label: 'Signups',      pct: 100, cls: 'bar-ok', delta: '412 this week', note: '100% baseline' },
+    { label: 'Data setup',   pct: 31,  cls: 'bar-wn', delta: '127 orgs',      note: '69% ghost at setup' },
+    { label: 'Chart create', pct: 22,  cls: 'bar-wn', delta: '91 orgs',       note: 'Day 7 activation' },
+    { label: 'Chart save',   pct: 9,   cls: 'bar-dn', delta: '37 orgs',       note: 'Biggest drop — prompt timing' },
+    { label: 'Month 1 ret.', pct: 5,   cls: 'bar-dn', delta: '21 orgs',       note: 'Only 5% of signups reach habit' }
+  ];
+
+  var fviz = document.getElementById('fviz');
+  if (!fviz) return;
+  var html = '';
+  steps.forEach(function (s) {
+    var bw = Math.max(s.pct, 4);
+    var showInner = bw > 18;
+    html += '<div class="fviz-row">';
+    html += '<div class="fviz-bar-wrap">';
+    html += '<div class="fviz-label">' + s.label + '</div>';
+    html += '<div class="fviz-bar-track" style="position:relative;">';
+    html += '<div class="fviz-bar-fill ' + s.cls + '" style="width:' + bw + '%">';
+    if (showInner) html += '<span class="fviz-bar-pct">' + s.pct + '%</span>';
+    html += '</div>';
+    if (!showInner) html += '<span style="position:absolute;left:' + (bw + 2) + '%;top:50%;transform:translateY(-50%);font-size:12px;font-weight:500;font-family:var(--font-mono);color:var(--color-text-primary);">' + s.pct + '%</span>';
+    html += '</div>';
+    html += '<div style="font-size:12px;font-weight:500;font-family:var(--font-mono);color:var(--color-text-primary);min-width:52px;text-align:right;">' + s.delta + '</div>';
+    html += '</div>';
+    html += '<div class="fviz-sub">' + s.note + '</div>';
+    html += '</div>';
+  });
+  fviz.innerHTML = html;
+})();
+</script>
+</body>
+</html>
