@@ -14,7 +14,6 @@
   --bg-card2:  #1F1F30;
   --border:    rgba(255,255,255,0.07);
   --border-md: rgba(255,255,255,0.12);
-  --border-hi: rgba(255,255,255,0.2);
   --purple:    #7B61FF;
   --purple-dim:#4B3B99;
   --purple-bg: rgba(123,97,255,0.1);
@@ -30,38 +29,37 @@
   --red-bg:    rgba(255,107,107,0.1);
   --mono:      'IBM Plex Mono', monospace;
   --sans:      'Inter', system-ui, sans-serif;
-  --r-md:      8px;
-  --r-lg:      12px;
-  --r-xl:      16px;
+  --r-md: 8px; --r-lg: 12px; --r-xl: 16px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{
-  font-family:var(--sans);
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
-  padding:40px 24px 60px;
+  font-family:var(--sans);background:var(--bg);color:var(--text);
+  min-height:100vh;padding:40px 24px 60px;
   background-image:
-    radial-gradient(ellipse 80% 40% at 50% -10%, rgba(123,97,255,0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 40% at 50% -10%,rgba(123,97,255,0.15) 0%,transparent 70%),
     url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='0.5' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E");
-  background-size: cover, 32px 32px;
+  background-size:cover,32px 32px;
 }
 .wrap{max-width:960px;margin:0 auto;}
+
+/* header */
 .hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
 .hdr-left{display:flex;align-items:center;gap:14px;}
 .logo-mark{width:28px;height:28px;border-radius:7px;background:var(--purple);display:flex;align-items:center;justify-content:center;}
 .logo-mark svg{width:16px;height:16px;}
 .hdr-title{font-size:15px;font-weight:500;color:var(--text);letter-spacing:-0.01em;}
 .hdr-meta{font-size:12px;color:var(--text-2);margin-top:2px;}
-.hdr-badge{font-size:11px;font-weight:500;color:var(--purple);background:var(--purple-bg);border:0.5px solid var(--purple-dim);border-radius:var(--r-md);padding:4px 12px;letter-spacing:.02em;}
+.hdr-badge{font-size:11px;font-weight:500;color:var(--purple);background:var(--purple-bg);border:0.5px solid var(--purple-dim);border-radius:var(--r-md);padding:4px 12px;}
+
+/* tabs */
 .tabs{display:flex;gap:2px;background:var(--bg-surface);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:4px;margin-bottom:28px;width:fit-content;}
 .tab{background:none;border:none;border-radius:var(--r-md);padding:7px 20px;font-size:13px;font-weight:500;color:var(--text-2);cursor:pointer;font-family:var(--sans);transition:all .15s;}
 .tab.on{background:var(--bg-card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.4);}
 .tab:hover:not(.on){color:var(--text);}
 .sec{display:none;}.sec.on{display:block;}
-.up{color:var(--green);}
-.dn{color:var(--red);}
-.fl{color:var(--text-3);}
+.up{color:var(--green);}.dn{color:var(--red);}.fl{color:var(--text-3);}
+
+/* NS cards */
 .ns-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px;}
 .ns-card{background:var(--bg-card);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:16px 18px;position:relative;overflow:hidden;}
 .ns-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple) 0%,transparent 100%);}
@@ -69,6 +67,8 @@ body{
 .ns-val{font-size:28px;font-weight:500;font-family:var(--mono);color:var(--text);line-height:1;margin-bottom:8px;letter-spacing:-0.02em;}
 .ns-dl{font-size:12px;font-weight:500;margin-bottom:3px;}
 .ns-sig{font-size:11px;color:var(--text-2);line-height:1.55;border-top:0.5px solid var(--border);padding-top:10px;margin-top:10px;}
+
+/* metric groups */
 .mg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .mg-block{background:var(--bg-surface);border:0.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
 .mg-head{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);padding:10px 16px;border-bottom:0.5px solid var(--border);}
@@ -77,19 +77,68 @@ body{
 .mg-name{font-size:12px;color:var(--text-2);}
 .mg-val{font-size:13px;font-weight:500;font-family:var(--mono);color:var(--text);text-align:right;}
 .mg-d{font-size:11px;font-weight:500;min-width:46px;text-align:right;}
+
 .sh{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin:24px 0 10px;}
+
+/* tables */
 .tbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px;}
 .tbl th{text-align:left;font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;padding:6px 10px;border-bottom:0.5px solid var(--border-md);}
+.tbl th.r,.tbl td.r{text-align:right;font-family:var(--mono);font-weight:500;}
 .tbl td{padding:10px 10px;border-bottom:0.5px solid var(--border);color:var(--text);font-size:13px;vertical-align:top;}
 .tbl tr:last-child td{border-bottom:none;}
-.tbl .r{text-align:right;font-family:var(--mono);font-weight:500;}
 .tbl .sm{color:var(--text-2);font-size:12px;}
+.tbl tr.hl-row td{background:var(--purple-bg2);}
+.tbl tr.hl-row td:first-child{border-left:2px solid var(--purple);}
+
 .bdg{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:var(--r-md);}
 .bdg-ok{background:var(--green-bg);color:var(--green);border:0.5px solid rgba(62,207,142,0.2);}
 .bdg-wn{background:var(--amber-bg);color:var(--amber);border:0.5px solid rgba(245,165,36,0.2);}
+.bdg-dn{background:var(--red-bg);color:var(--red);border:0.5px solid rgba(255,107,107,0.2);}
 .bdg-nt{background:var(--bg-card2);color:var(--text-2);border:0.5px solid var(--border);}
+.bdg-pu{background:var(--purple-bg);color:var(--purple);border:0.5px solid var(--purple-dim);}
+
 .note{background:var(--purple-bg2);border:0.5px solid var(--border);border-left:2px solid var(--purple-dim);padding:11px 16px;margin-top:12px;font-size:12px;color:var(--text-2);line-height:1.6;}
 .note strong{color:var(--text);font-weight:500;}
+
+/* ── Cross-product pipeline section ── */
+.xp-kpi-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+.xp-kpi{background:var(--bg-card);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:14px 16px;}
+.xp-kpi-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:6px;}
+.xp-kpi-val{font-size:24px;font-weight:500;font-family:var(--mono);color:var(--text);letter-spacing:-0.02em;}
+.xp-kpi-sub{font-size:11px;color:var(--text-2);margin-top:3px;}
+
+/* pipeline flow */
+.pipeline-flow{display:flex;align-items:center;gap:0;background:var(--bg-surface);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:16px 20px;margin-bottom:16px;overflow-x:auto;}
+.pf-stage{text-align:center;flex-shrink:0;}
+.pf-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin-bottom:4px;}
+.pf-val{font-size:22px;font-weight:500;font-family:var(--mono);color:var(--text);line-height:1;}
+.pf-sub{font-size:10px;color:var(--text-3);margin-top:2px;}
+.pf-arrow{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px;min-width:60px;}
+.pf-rate{font-size:12px;font-weight:500;font-family:var(--mono);color:var(--text-2);margin-bottom:3px;}
+.pf-line{width:100%;height:1px;background:var(--border-md);position:relative;}
+.pf-line::after{content:'';position:absolute;right:-4px;top:-3px;width:0;height:0;border-left:5px solid var(--border-md);border-top:3px solid transparent;border-bottom:3px solid transparent;}
+.pf-rate.good{color:var(--green);}
+.pf-rate.warn{color:var(--amber);}
+.pf-rate.bad{color:var(--red);}
+
+/* spotlight campaign cards */
+.xp-spotlight{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:16px;}
+.xp-card{background:var(--bg-surface);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:14px 16px;position:relative;overflow:hidden;}
+.xp-card.flag-warn::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--amber);}
+.xp-card.flag-ok::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);}
+.xp-card.flag-bad::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--red);}
+.xp-card-name{font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.xp-metric-row{display:flex;justify-content:space-between;margin-bottom:4px;}
+.xp-metric-lbl{font-size:11px;color:var(--text-3);}
+.xp-metric-val{font-size:11px;font-weight:500;font-family:var(--mono);color:var(--text);}
+.xp-conv-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border);}
+.xp-conv-lbl{font-size:10px;color:var(--text-3);}
+.xp-conv-val{font-size:12px;font-weight:500;font-family:var(--mono);}
+.xp-flag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:var(--r-md);margin-top:8px;display:inline-block;}
+.xp-flag-ok{background:var(--green-bg);color:var(--green);}
+.xp-flag-bad{background:var(--red-bg);color:var(--red);}
+
+/* funnel tab */
 .bfnl-wrap{display:grid;grid-template-columns:1fr 280px;gap:24px;margin-bottom:28px;padding-bottom:28px;border-bottom:0.5px solid var(--border);}
 .bfnl-head{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:14px;}
 .bfnl-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px;}
@@ -124,6 +173,8 @@ body{
 .fnl-hl .fnl-name{font-weight:500;}
 .fnl-hl .fnl-interp{color:var(--amber);}
 .divider-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:16px;}
+
+/* takeaways */
 .tk-context{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
 .tk-panel{background:var(--bg-surface);border:0.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
 .tk-panel-head{padding:11px 16px;border-bottom:0.5px solid var(--border);}
@@ -146,6 +197,8 @@ body{
 .tk-action-num{font-size:24px;font-weight:500;font-family:var(--mono);color:var(--purple);line-height:1;flex-shrink:0;width:30px;opacity:0.7;}
 .tk-action-title{font-size:13px;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:4px;}
 .tk-action-detail{font-size:11px;color:var(--text-2);line-height:1.55;}
+
+.xp-section-divider{border-top:0.5px solid var(--border);margin:24px 0 0;padding-top:20px;}
 </style>
 </head>
 <body>
@@ -173,7 +226,7 @@ body{
   <button class="tab" data-t="tk">Takeaways</button>
 </div>
 
-<!-- OVERVIEW -->
+<!-- ── OVERVIEW ── -->
 <div class="sec on" id="t-ov">
   <div class="ns-grid">
     <div class="ns-card">
@@ -233,8 +286,9 @@ body{
   </div>
 </div>
 
-<!-- CAMPAIGNS -->
+<!-- ── CAMPAIGNS ── -->
 <div class="sec" id="t-cp">
+
   <div class="sh" style="margin-top:0;">Revenue drivers</div>
   <table class="tbl">
     <tr><th>Campaign</th><th>Goal</th><th class="r">Revenue</th><th class="r">WoW</th><th>Verdict</th></tr>
@@ -244,6 +298,7 @@ body{
     <tr><td>AI Assistant upgrade (G&amp;S users)</td><td class="sm">G&amp;S expansion</td><td class="r">$2K</td><td class="r fl">Wk 1</td><td><span class="bdg bdg-nt">Too early</span></td></tr>
   </table>
   <div class="note"><strong>Copy pattern that works:</strong> The overage prompt leads with value delivered before surfacing pricing. Apply this structure to all upgrade prompts.</div>
+
   <div class="sh">Behavior drivers</div>
   <table class="tbl">
     <tr><th>Campaign</th><th>Target behavior</th><th class="r">CVR</th><th class="r">WoW</th><th>Verdict</th></tr>
@@ -252,8 +307,162 @@ body{
     <tr><td>"Invite a teammate" (Plus Day 7)</td><td class="sm">Teammate invite</td><td class="r">6%</td><td class="r fl">&mdash;</td><td><span class="bdg bdg-wn">New approach</span></td></tr>
     <tr><td>Feature discovery: monitors (Plus)</td><td class="sm">Monitor creation</td><td class="r">3%</td><td class="r up">&uarr; 1pp</td><td><span class="bdg bdg-ok">Protect</span></td></tr>
   </table>
-  <div class="note"><strong>Biggest underperforming lever:</strong> Teammate invite flat at 6% despite being a 2.5x retention multiplier. Test: move trigger to after dashboard creation, reframe copy to "get your team on this dashboard."</div>
-  <div class="sh">Pipeline / sales impact</div>
+
+  <!-- ── CROSS-PRODUCT PIPELINE ── -->
+  <div class="xp-section-divider">
+    <div class="sh" style="margin-top:0;color:var(--purple);">In-product cross-product pipeline</div>
+
+    <!-- Tableau KPIs -->
+    <div class="xp-kpi-row">
+      <div class="xp-kpi">
+        <div class="xp-kpi-lbl">S2 $ sourced</div>
+        <div class="xp-kpi-val">$1.0M</div>
+        <div class="xp-kpi-sub">Pipeline directly attributable to in-product campaigns</div>
+      </div>
+      <div class="xp-kpi">
+        <div class="xp-kpi-lbl">MQL &rarr; S2 funnel conv. rate</div>
+        <div class="xp-kpi-val" style="color:var(--amber);">0.8%</div>
+        <div class="xp-kpi-sub">740 MQLs &rarr; 14 S2s. Top of funnel healthy; late-stage conversion is the constraint.</div>
+      </div>
+      <div class="xp-kpi">
+        <div class="xp-kpi-lbl">S2 $ influenced</div>
+        <div class="xp-kpi-val">$5.5M</div>
+        <div class="xp-kpi-sub">W-shaped attribution across all in-product hand raiser touches</div>
+      </div>
+    </div>
+
+    <!-- Pipeline flow -->
+    <div class="pipeline-flow">
+      <div class="pf-stage">
+        <div class="pf-label">INQ</div>
+        <div class="pf-val">1,727</div>
+        <div class="pf-sub">hand raisers</div>
+      </div>
+      <div class="pf-arrow">
+        <div class="pf-rate good">42.8%</div>
+        <div class="pf-line"></div>
+      </div>
+      <div class="pf-stage">
+        <div class="pf-label">MQL</div>
+        <div class="pf-val">740</div>
+        <div class="pf-sub">campaign MQL</div>
+      </div>
+      <div class="pf-arrow">
+        <div class="pf-rate good">68.1%</div>
+        <div class="pf-line"></div>
+      </div>
+      <div class="pf-stage">
+        <div class="pf-label">SAL</div>
+        <div class="pf-val">504</div>
+        <div class="pf-sub">sales accepted</div>
+      </div>
+      <div class="pf-arrow">
+        <div class="pf-rate warn">3.4%</div>
+        <div class="pf-line"></div>
+      </div>
+      <div class="pf-stage">
+        <div class="pf-label">S1</div>
+        <div class="pf-val">17</div>
+        <div class="pf-sub">qualified opps</div>
+      </div>
+      <div class="pf-arrow">
+        <div class="pf-rate warn">82.4%</div>
+        <div class="pf-line"></div>
+      </div>
+      <div class="pf-stage">
+        <div class="pf-label">S2</div>
+        <div class="pf-val">14</div>
+        <div class="pf-sub">active pipeline</div>
+      </div>
+      <div class="pf-arrow">
+        <div class="pf-rate bad">0%</div>
+        <div class="pf-line"></div>
+      </div>
+      <div class="pf-stage">
+        <div class="pf-label">Closed won</div>
+        <div class="pf-val" style="color:var(--text-3);">0</div>
+        <div class="pf-sub">this period</div>
+      </div>
+    </div>
+
+    <!-- Spotlight: 3 key campaigns -->
+    <div class="sh">Key hand raiser campaigns</div>
+    <div class="xp-spotlight">
+      <div class="xp-card flag-ok">
+        <div class="xp-card-name">AI Assistant</div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">INQ</span><span class="xp-metric-val">489</span></div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">Campaign MQL</span><span class="xp-metric-val">361</span></div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">SAL</span><span class="xp-metric-val">237</span></div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">S2</span><span class="xp-metric-val">0</span></div>
+        <div class="xp-conv-row">
+          <div>
+            <div class="xp-conv-lbl">INQ &rarr; MQL</div>
+            <div class="xp-conv-val" style="color:var(--green);">73.8%</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="xp-conv-lbl">MQL &rarr; SAL</div>
+            <div class="xp-conv-val" style="color:var(--green);">65.7%</div>
+          </div>
+        </div>
+        <div class="xp-flag xp-flag-ok">Strongest volume</div>
+      </div>
+      <div class="xp-card flag-ok">
+        <div class="xp-card-name">Guides &amp; Surveys</div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">INQ</span><span class="xp-metric-val">192</span></div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">Campaign MQL</span><span class="xp-metric-val">154</span></div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">SAL</span><span class="xp-metric-val">115</span></div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">S2</span><span class="xp-metric-val">1</span></div>
+        <div class="xp-conv-row">
+          <div>
+            <div class="xp-conv-lbl">INQ &rarr; MQL</div>
+            <div class="xp-conv-val" style="color:var(--green);">80.2%</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="xp-conv-lbl">MQL &rarr; SAL</div>
+            <div class="xp-conv-val" style="color:var(--green);">74.7%</div>
+          </div>
+        </div>
+        <div class="xp-flag xp-flag-ok">Best conv. rate</div>
+      </div>
+      <div class="xp-card flag-bad">
+        <div class="xp-card-name">Session Replay</div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">INQ</span><span class="xp-metric-val">120</span></div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">Campaign MQL</span><span class="xp-metric-val">3</span></div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">SAL</span><span class="xp-metric-val">1</span></div>
+        <div class="xp-metric-row"><span class="xp-metric-lbl">S2</span><span class="xp-metric-val">3</span></div>
+        <div class="xp-conv-row">
+          <div>
+            <div class="xp-conv-lbl">INQ &rarr; MQL</div>
+            <div class="xp-conv-val" style="color:var(--red);">2.5%</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="xp-conv-lbl">MQL &rarr; SAL</div>
+            <div class="xp-conv-val" style="color:var(--amber);">33.3%</div>
+          </div>
+        </div>
+        <div class="xp-flag xp-flag-bad">INQ &rarr; MQL broken</div>
+      </div>
+    </div>
+    <div class="note"><strong>Session Replay flag:</strong> 120 INQs generating only 3 MQLs (2.5%) is structurally broken — AI Assistant and G&S both convert above 70%. This is either a lead scoring issue, a routing problem, or the SR hand raiser is attracting unqualified intent. Needs investigation before scaling SR acquisition.</div>
+
+    <!-- Full campaign table -->
+    <div class="sh">All in-product hand raiser campaigns</div>
+    <table class="tbl">
+      <tr><th>Campaign</th><th class="r">INQ</th><th class="r">MQL</th><th class="r">SAL</th><th class="r">S2</th><th class="r">INQ&rarr;MQL</th><th class="r">MQL&rarr;SAL</th><th class="r">S2 $ Sourced</th></tr>
+      <tr><td style="color:var(--text-2);font-size:11px;font-weight:600;">Grand total</td><td class="r" style="font-weight:600;">1,727</td><td class="r" style="font-weight:600;">740</td><td class="r" style="font-weight:600;">504</td><td class="r" style="font-weight:600;">14</td><td class="r" style="font-weight:600;">42.8%</td><td class="r" style="font-weight:600;">68.1%</td><td class="r" style="font-weight:600;">$1.0M</td></tr>
+      <tr class="hl-row"><td>AI Assistant</td><td class="r">489</td><td class="r">361</td><td class="r">237</td><td class="r">0</td><td class="r up">73.8%</td><td class="r up">65.7%</td><td class="r">—</td></tr>
+      <tr class="hl-row"><td>Guides &amp; Surveys</td><td class="r">192</td><td class="r">154</td><td class="r">115</td><td class="r">1</td><td class="r up">80.2%</td><td class="r up">74.7%</td><td class="r">$75K</td></tr>
+      <tr class="hl-row"><td>Session Replay</td><td class="r">120</td><td class="r">3</td><td class="r">1</td><td class="r">3</td><td class="r dn">2.5%</td><td class="r fl">33.3%</td><td class="r">$130K</td></tr>
+      <tr><td>Pricing page hand raiser</td><td class="r">91</td><td class="r">61</td><td class="r">42</td><td class="r">7</td><td class="r up">67.0%</td><td class="r up">68.9%</td><td class="r">$477K</td></tr>
+      <tr><td>Zoning (beta)</td><td class="r">76</td><td class="r">11</td><td class="r">5</td><td class="r">1</td><td class="r fl">14.5%</td><td class="r fl">45.5%</td><td class="r">$155K</td></tr>
+      <tr><td>Heatmaps</td><td class="r">49</td><td class="r">36</td><td class="r">23</td><td class="r">0</td><td class="r up">73.5%</td><td class="r up">63.9%</td><td class="r">—</td></tr>
+      <tr><td>AI Feedback</td><td class="r">38</td><td class="r">22</td><td class="r">15</td><td class="r">0</td><td class="r up">57.9%</td><td class="r up">68.2%</td><td class="r">—</td></tr>
+      <tr><td>Likely to convert (PQA)</td><td class="r">557</td><td class="r">9</td><td class="r">5</td><td class="r">1</td><td class="r dn">1.6%</td><td class="r fl">55.6%</td><td class="r">$150K</td></tr>
+    </table>
+    <div class="note"><strong>Pricing page hand raiser is the highest S2 sourced</strong> at $477K despite modest volume (91 INQs). This is a high-intent signal worth analyzing for copy and timing patterns that can be applied to other campaigns.</div>
+  </div>
+
+  <div class="sh" style="border-top:0.5px solid var(--border);padding-top:20px;">PQL / sales pipeline</div>
   <table class="tbl">
     <tr><th>Trigger</th><th>Type</th><th class="r">Leads</th><th class="r">WoW</th><th>Verdict</th></tr>
     <tr><td>High-usage Starter "Talk to us"</td><td class="sm">PQL &rarr; Sales</td><td class="r">47</td><td class="r up">&uarr; 8</td><td><span class="bdg bdg-ok">Working</span></td></tr>
@@ -262,7 +471,7 @@ body{
   </table>
 </div>
 
-<!-- FUNNEL -->
+<!-- ── FUNNEL ── -->
 <div class="sec" id="t-fn">
   <div class="bfnl-wrap">
     <div>
@@ -305,7 +514,7 @@ body{
   </div>
 </div>
 
-<!-- TAKEAWAYS -->
+<!-- ── TAKEAWAYS ── -->
 <div class="sec" id="t-tk">
   <div class="tk-context">
     <div class="tk-panel">
@@ -313,16 +522,16 @@ body{
       <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>v4 "Free" framing moving Free &rarr; Plus conversions. Up 0.8pp week 1.</div>
       <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>Dashboard creation nudge +3pp. The 3.3x retention behavior. Scale it.</div>
       <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>Overage prompt top revenue driver. Value-first copy beats gate-first.</div>
-      <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>Enterprise expansion $124K, +14% WoW. Multi-product attach compounding.</div>
-      <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>Builder signups at 31% of total &mdash; highest mix in recent months.</div>
+      <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>AI Assistant hand raiser: 73.8% INQ&rarr;MQL, strongest pipeline generator.</div>
+      <div class="tk-panel-row"><div class="tk-dot tk-dot-ok"></div>G&amp;S hand raiser: 80.2% INQ&rarr;MQL &mdash; best conversion rate in the program.</div>
     </div>
     <div class="tk-panel">
       <div class="tk-panel-head tk-panel-head-wn"><span class="tk-panel-label-wn">Risks</span></div>
+      <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Session Replay hand raiser: 120 INQs, only 3 MQLs (2.5%). Structurally broken.</div>
       <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Builder activation declining while acquisition grows. 8.2%, down 1.1pp.</div>
       <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Plus Day 60 retention 20pp below benchmark. 1,095 at-risk orgs, +34 this week.</div>
       <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Chart save rate dropped 3pp. Starter's most important activation signal.</div>
-      <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Teammate invite flat at 6%. A 2.5x retention lever no campaign is moving.</div>
-      <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>Plus expansion down 12%. Orgs that don't form habits don't expand.</div>
+      <div class="tk-panel-row"><div class="tk-dot tk-dot-wn"></div>MQL &rarr; S2 conv. at 0.8%. Top-of-funnel healthy; late-stage is the bottleneck.</div>
     </div>
   </div>
   <div class="section-divider">
@@ -331,12 +540,12 @@ body{
       <div class="tk-actions-sub">6 items &middot; prioritized</div>
     </div>
     <div class="tk-action-grid">
-      <div class="tk-action-card"><div class="tk-action-num">1</div><div><div class="tk-action-title">Fix teammate invite prompt</div><div class="tk-action-detail">Move trigger to after dashboard creation. Rewrite copy: "get your team on this dashboard." 2.5x retention lever currently flat.</div></div></div>
-      <div class="tk-action-card"><div class="tk-action-num">2</div><div><div class="tk-action-title">Move dashboard creation to Day 1</div><div class="tk-action-detail">Test with a pre-populated demo dashboard. 3.3x retention multiplier &mdash; earlier is better.</div></div></div>
-      <div class="tk-action-card"><div class="tk-action-num">3</div><div><div class="tk-action-title">Audit builder onboarding</div><div class="tk-action-detail">Pull first-session drop-off for builder cohort specifically. Do not scale acquisition before this is understood.</div></div></div>
-      <div class="tk-action-card"><div class="tk-action-num">4</div><div><div class="tk-action-title">Fix chart save prompt timing</div><div class="tk-action-detail">Fire on first meaningful chart interaction, not after creation completes. Rate dropped 3pp WoW.</div></div></div>
+      <div class="tk-action-card"><div class="tk-action-num">1</div><div><div class="tk-action-title">Investigate Session Replay hand raiser</div><div class="tk-action-detail">120 INQs generating 3 MQLs (2.5%) vs. 70%+ for AI Assistant and G&S. Either lead scoring, routing, or the hand raiser is attracting wrong intent. Diagnose before scaling SR acquisition.</div></div></div>
+      <div class="tk-action-card"><div class="tk-action-num">2</div><div><div class="tk-action-title">Fix teammate invite prompt</div><div class="tk-action-detail">Move trigger to after dashboard creation. Rewrite: "get your team on this dashboard." 2.5x retention lever currently flat.</div></div></div>
+      <div class="tk-action-card"><div class="tk-action-num">3</div><div><div class="tk-action-title">Move dashboard creation to Day 1</div><div class="tk-action-detail">Test with a pre-populated demo dashboard. 3.3x retention multiplier &mdash; earlier is better.</div></div></div>
+      <div class="tk-action-card"><div class="tk-action-num">4</div><div><div class="tk-action-title">Audit builder onboarding</div><div class="tk-action-detail">Pull first-session drop-off for builder cohort specifically. Do not scale acquisition before this is understood.</div></div></div>
       <div class="tk-action-card"><div class="tk-action-num">5</div><div><div class="tk-action-title">Ship at-risk org report to Slack</div><div class="tk-action-detail">Snehith's active_plus_at_risk.sql &rarr; Slack weekly. Automatable, no roadmap. Coordinate Trusha on lifecycle timing.</div></div></div>
-      <div class="tk-action-card"><div class="tk-action-num">6</div><div><div class="tk-action-title">Apply overage copy template everywhere</div><div class="tk-action-detail">Structure: [value delivered] &rarr; [what unlocks] &rarr; [clear action]. Rewrite dashboard modal and invite prompt first.</div></div></div>
+      <div class="tk-action-card"><div class="tk-action-num">6</div><div><div class="tk-action-title">Apply pricing page hand raiser learnings</div><div class="tk-action-detail">$477K S2 sourced from 91 INQs is the highest value-per-lead in the program. Analyze copy and timing patterns to apply to other campaigns.</div></div></div>
     </div>
   </div>
 </div>
@@ -368,8 +577,8 @@ body{
   var html='';
   steps.forEach(function(s){
     var bw=Math.max(s.pct,4);
-    var showInner=bw>20;
-    html+='<div class="fviz-row"><div class="fviz-bar-wrap"><div class="fviz-label">'+s.label+'</div><div class="fviz-bar-track" style="position:relative;"><div class="fviz-bar-fill '+s.cls+'" style="width:'+bw+'%">'+(showInner?'<span class="fviz-bar-pct">'+s.pct+'%</span>':'')+'</div>'+(showInner?'':'<span style="position:absolute;left:'+(bw+2)+'%;top:50%;transform:translateY(-50%);font-size:11px;font-weight:500;font-family:var(--mono);color:var(--text-2);">'+s.pct+'%</span>')+'</div><div style="font-size:12px;font-weight:500;font-family:var(--mono);color:var(--text-2);min-width:32px;text-align:right;">'+s.delta+'</div></div><div class="fviz-sub">'+s.note+'</div></div>';
+    var si=bw>20;
+    html+='<div class="fviz-row"><div class="fviz-bar-wrap"><div class="fviz-label">'+s.label+'</div><div class="fviz-bar-track" style="position:relative;"><div class="fviz-bar-fill '+s.cls+'" style="width:'+bw+'%">'+(si?'<span class="fviz-bar-pct">'+s.pct+'%</span>':'')+'</div>'+(si?'':'<span style="position:absolute;left:'+(bw+2)+'%;top:50%;transform:translateY(-50%);font-size:11px;font-weight:500;font-family:var(--mono);color:var(--text-2);">'+s.pct+'%</span>')+'</div><div style="font-size:12px;font-weight:500;font-family:var(--mono);color:var(--text-2);min-width:32px;text-align:right;">'+s.delta+'</div></div><div class="fviz-sub">'+s.note+'</div></div>';
   });
   fviz.innerHTML=html;
 })();
